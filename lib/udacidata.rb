@@ -9,7 +9,7 @@ class Udacidata
   def self.create(options = {})
     new_product = Product.new(options)
     @@data << new_product
-    insert_data(to_csv_array(new_product))
+    insert_data(to_csv_array(new_product)) # if id not in csv
     new_product
   end
 

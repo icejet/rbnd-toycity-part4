@@ -9,7 +9,7 @@ class Udacidata
   def self.create(options = {})
     new_product = Product.new(options)
     @@data << new_product
-    insert_data(to_csv_array(new_product)) # if id not in csv
+    insert_data(to_csv_array(new_product)) # unless object_in_db?(new_product.id)
     new_product
   end
 
@@ -27,7 +27,15 @@ class Udacidata
     end
   end
 
-  def self.to_csv_array(database_obj)
-    [database_obj.id, database_obj.brand, database_obj.name, database_obj.price]
+  def self.to_csv_array(data_object)
+    [data_object.id, data_object.brand, data_object.name, data_object.price]
+  end
+
+  def self.object_in_db?(obj_id)
+    # TODO check other fields not id.
+    db = CSV.read(@@path)
+    db.find do |record|
+      obj_id == record[0].to_i
+    end
   end
 end

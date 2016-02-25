@@ -19,13 +19,19 @@ class Udacidata
 
   def self.first(n = 0)
     return @@data.first if n == 0
-    return @@data[0..n-1] if n > 0
+    @@data[0..n - 1]
   end
 
   def self.last(n = 0)
     return @@data.last if n == 0
     n *= -1
     @@data[n..-1]
+  end
+
+  def self.find(id)
+    @@data.find do |record|
+      record.id == id
+    end
   end
 
   def self.insert_data(data_array)

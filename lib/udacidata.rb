@@ -36,7 +36,7 @@ class Udacidata
 
   def self.destroy(id)
     # Seriously refactor this mess.
-    deleted = Product.find(7)
+    deleted = Product.find(id)
     database = CSV.read(@@path)
 
     new_database = database.select do |record|

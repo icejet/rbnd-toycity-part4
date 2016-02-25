@@ -22,6 +22,12 @@ class Udacidata
     return @@data[0..n-1] if n > 0
   end
 
+  def self.last(n = 0)
+    return @@data.last if n == 0
+    n *= -1
+    @@data[n..-1]
+  end
+
   def self.insert_data(data_array)
     CSV.open(@@path, "ab") do |csv|
       csv << data_array

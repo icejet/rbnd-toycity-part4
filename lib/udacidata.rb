@@ -17,8 +17,9 @@ class Udacidata
     @@data
   end
 
-  def self.first
-    @@data.first
+  def self.first(n = 0)
+    return @@data.first if n == 0
+    return @@data[0..n-1] if n > 0
   end
 
   def self.insert_data(data_array)

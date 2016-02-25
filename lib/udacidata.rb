@@ -34,6 +34,23 @@ class Udacidata
     end
   end
 
+  def self.destroy(id)
+    # Seriously refactor this mess.
+    deleted = Product.find(7)
+    database = CSV.read(@@path)
+
+    new_database = database.select do |record|
+      record[0].to_i != id
+    end
+
+    CSV.open(@@path, "wb") do |csv|
+      new_database.each do |record|
+        csv << record
+      end
+    end
+    deleted
+  end
+
   def self.insert_data(data_array)
     CSV.open(@@path, "ab") do |csv|
       csv << data_array

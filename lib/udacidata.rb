@@ -3,9 +3,9 @@ require_relative 'errors'
 require 'csv'
 
 class Udacidata
-  Module.create_finder_methods(:brand, :name)
   @@data = []
   @@path = File.dirname(__FILE__) + "/../data/data.csv"
+  Module.create_finder_methods(:brand, :name)
 
   def self.create(options = {})
     new_product = Product.new(options)
@@ -50,6 +50,23 @@ class Udacidata
       end
     end
     deleted
+  end
+
+  def self.where(options)
+    brand = options[:brand]
+    name = options[:name]
+    all.find_all do |product|
+      product.brand == brand if brand
+      product.name == name if name
+    end
+  end
+
+  def update(options)
+    brand = options[:brand] ? options[:brand] : brand
+    name = options[:name] ? options[:name] : name
+    price = options[:price] ? options[:price] : price
+    Udacidata.destroy(id)
+    Udacidata.create(id: id, brand: brand, name: name, price: price)
   end
 
   def self.insert_data(data_array)

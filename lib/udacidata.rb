@@ -53,11 +53,9 @@ class Udacidata
   end
 
   def self.where(options)
-    brand = options[:brand]
-    name = options[:name]
-    all.find_all do |product|
-      product.brand == brand if brand
-      product.name == name if name
+    all.select do |product|
+      product.name == options[:name] if options[:name]
+      product.brand == options[:brand] if options[:brand]
     end
   end
 

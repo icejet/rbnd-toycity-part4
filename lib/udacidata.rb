@@ -30,14 +30,17 @@ class Udacidata
   end
 
   def self.find(id)
-    @@data.find do |record|
+    found = @@data.find do |record|
       record.id == id
     end
+    check_product_exists(found)
+    found
   end
 
   def self.destroy(id)
     # Seriously refactor this mess.
     deleted = Product.find(id)
+    check_product_exists(deleted)
     database = CSV.read(@@path)
 
     new_database = database.select do |record|
@@ -88,5 +91,9 @@ class Udacidata
     db.find do |record|
       obj_id == record[0].to_i
     end
+  end
+
+  def self.check_product_exists(found)
+    raise ProductNotFoundError unless found
   end
 end

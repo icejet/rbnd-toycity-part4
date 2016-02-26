@@ -39,7 +39,7 @@ module Analyzable
   def create_lines(summary_hash)
     report = ""
     summary_hash.each do |k, v|
-      report += "#- {k}: #{v}\n"
+      report += "\t- #{k}: #{v}\n"
     end
     report
   end

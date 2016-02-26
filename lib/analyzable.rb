@@ -15,4 +15,13 @@ module Analyzable
     end
     brands
   end
+
+  def self.count_by_name(item_array)
+    names = {}
+    item_array.each do |item|
+      names[item.name] = 0 unless names[item.name]
+      names[item.name] += 1
+    end
+    names
+  end
 end

@@ -9,8 +9,9 @@ class Udacidata
 
   def self.create(options = {})
     new_product = Product.new(options)
-    @@data << new_product
-    insert_data(to_csv_array(new_product)) # unless object_in_db?(new_product.id)
+    in_db = object_in_db?(new_product)
+    @@data << new_product unless in_db
+    insert_data(to_csv_array(new_product)) unless in_db
     new_product
   end
 
@@ -37,7 +38,6 @@ class Udacidata
   end
 
   def self.destroy(id)
-    # Seriously refactor this mess.
     deleted = Product.find(id)
     check_product_exists(deleted)
     remove_from_array(deleted)
@@ -58,7 +58,6 @@ class Udacidata
   end
 
   def update(options)
-    puts "#{id}, #{price}, #{name}"
     new_brand = options[:brand] ? options[:brand] : brand
     new_name = options[:name] ? options[:name] : name
     new_price = options[:price] ? options[:price] : price
@@ -96,15 +95,18 @@ class Udacidata
     [data_object.id, data_object.brand, data_object.name, data_object.price]
   end
 
-  def self.object_in_db?(obj_id)
+  def self.object_in_db?(db_object)
     # TODO check other fields not id.
     db = CSV.read(@@path)
-    db.find do |record|
-      obj_id == record[0].to_i
+    existing_record = db.find do |record|
+      record[0].to_i == db_object.id
     end
+    existing_record
   end
 
   def self.check_product_exists(found)
     raise ProductNotFoundError unless found
   end
+
+
 end

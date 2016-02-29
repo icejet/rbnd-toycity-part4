@@ -20,13 +20,12 @@ class Udacidata
 
   def self.first(n = 0)
     return @@data.first if n == 0
-    @@data[0..n - 1]
+    @@data.first(n)
   end
 
   def self.last(n = 0)
     return @@data.last if n == 0
-    n *= -1
-    @@data[n..-1]
+    @@data.last(n)
   end
 
   def self.find(id)
@@ -41,17 +40,8 @@ class Udacidata
     # Seriously refactor this mess.
     deleted = Product.find(id)
     check_product_exists(deleted)
-    database = CSV.read(@@path)
-
-    new_database = database.select do |record|
-      record[0].to_i != id
-    end
-
-    CSV.open(@@path, "wb") do |csv|
-      new_database.each do |record|
-        csv << record
-      end
-    end
+    remove_from_array(deleted)
+    overwrite_file(generate_post_delete_array(deleted))
     deleted
   end
 
@@ -73,6 +63,26 @@ class Udacidata
     price = options[:price] ? options[:price] : price
     Udacidata.destroy(id)
     Udacidata.create(id: id, brand: brand, name: name, price: price)
+  end
+
+  def self.remove_from_array(product)
+    @@data.delete(product)
+  end
+
+  def self.generate_post_delete_array(product)
+    database = CSV.read(@@path)
+    new_database = database.select do |record|
+      record[0].to_i != product.id
+    end
+    new_database
+  end
+
+  def self.overwrite_file(csv_array)
+    CSV.open(@@path, "wb") do |csv|
+      csv_array.each do |record|
+        csv << record
+      end
+    end
   end
 
   def self.insert_data(data_array)

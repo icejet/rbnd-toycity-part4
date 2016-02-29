@@ -58,11 +58,12 @@ class Udacidata
   end
 
   def update(options)
-    brand = options[:brand] ? options[:brand] : brand
-    name = options[:name] ? options[:name] : name
-    price = options[:price] ? options[:price] : price
+    puts "#{id}, #{price}, #{name}"
+    new_brand = options[:brand] ? options[:brand] : brand
+    new_name = options[:name] ? options[:name] : name
+    new_price = options[:price] ? options[:price] : price
     Udacidata.destroy(id)
-    Udacidata.create(id: id, brand: brand, name: name, price: price)
+    Udacidata.create(id: id, brand: new_brand, name: new_name, price: new_price)
   end
 
   def self.remove_from_array(product)

@@ -40,7 +40,6 @@ class Udacidata
   def self.destroy(id)
     deleted = Product.find(id)
     check_product_exists(deleted)
-    remove_from_array(deleted)
     overwrite_file(generate_post_delete_array(deleted))
     deleted
   end
@@ -63,10 +62,6 @@ class Udacidata
     new_price = options[:price] ? options[:price] : price
     Udacidata.destroy(id)
     Udacidata.create(id: id, brand: new_brand, name: new_name, price: new_price)
-  end
-
-  def self.remove_from_array(product)
-    @@data.delete(product)
   end
 
   def self.generate_post_delete_array(product)
